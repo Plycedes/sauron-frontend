@@ -1,0 +1,23 @@
+export type UserRole = 'super_admin' | 'company_admin' | 'pm' | 'member';
+
+export interface UserResponse {
+    id: string;
+    email: string;
+    name: string;
+    role: UserRole;
+    companyId?: string | null;
+    createdAt: string;
+    updatedAt: string;
+}
+
+export interface RegisterInput {
+    userId: string;
+    fullName: string;
+    email: string;
+    password: string;
+}
+
+export interface LoginInput {
+    userId: string;
+    password: string;
+}
