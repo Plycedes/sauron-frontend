@@ -27,7 +27,7 @@ export async function loginUser(input: LoginInput): Promise<AuthSuccessPayload> 
 	if (!payload.success) {
 		throw new Error(payload.message);
 	}
-	console.log(payload);
+
 	setAccessToken(payload.data.accessToken);
 	setRefreshToken(payload.data.refreshToken);
 	return payload.data;
