@@ -19,7 +19,7 @@ interface NavItem {
 const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard', label: 'Dashboard' },
   { href: '/dashboard/projects', label: 'Projects' },
-  { href: '/dashboard/updates', label: 'My Updates' },
+  { href: '/dashboard/my-updates', label: 'My Updates' },
   { href: '/dashboard/team', label: 'Team', privileged: true },
   { href: '/dashboard/rag', label: 'Ask PulseIQ', privileged: true },
 ];
