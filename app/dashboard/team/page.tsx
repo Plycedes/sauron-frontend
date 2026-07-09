@@ -7,6 +7,7 @@ import { useApi } from '@/lib/hooks/useApi';
 import * as companyService from '@/lib/api/services/company.service';
 import * as analyticsService from '@/lib/api/services/analytics.service';
 import * as updateService from '@/lib/api/services/update.service';
+import { ROLE_LABEL } from '@/lib/constants/roles';
 import { Button } from '@/components/ui/Button';
 import { StatCard } from '@/components/analytics/StatCard';
 import { UpdateCard } from '@/components/updates/UpdateCard';
@@ -109,12 +110,6 @@ function MemberList({
   selectedId: string | null;
   onSelect: (m: MembershipResponse) => void;
 }) {
-  const ROLE_LABEL: Record<string, string> = {
-    company_admin: 'Admin',
-    pm: 'PM',
-    member: 'Member',
-  };
-
   if (members.length === 0) {
     return (
       <div className="rounded-lg border border-gray-800 bg-gray-900 p-6 text-center">

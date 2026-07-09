@@ -6,18 +6,13 @@ import { useApi } from '@/lib/hooks/useApi';
 import { useMutation } from '@/lib/hooks/useMutation';
 import * as companyService from '@/lib/api/services/company.service';
 import * as inviteService from '@/lib/api/services/invite.service';
+import { ROLE_LABEL } from '@/lib/constants/roles';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import type { CompanyInput, CompanyResponse } from '@/types/company.types';
 import type { InviteResponse } from '@/types/invite.types';
 
 type Tab = 'join' | 'create';
-
-const ROLE_LABEL: Record<string, string> = {
-  company_admin: 'Admin',
-  pm: 'PM',
-  member: 'Member',
-};
 
 export function OnboardingScreen() {
   const [tab, setTab] = useState<Tab>('join');

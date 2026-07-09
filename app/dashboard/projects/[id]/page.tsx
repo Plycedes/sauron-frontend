@@ -9,6 +9,7 @@ import { useMutation } from '@/lib/hooks/useMutation';
 import * as projectService from '@/lib/api/services/project.service';
 import * as updateService from '@/lib/api/services/update.service';
 import * as analyticsService from '@/lib/api/services/analytics.service';
+import { ROLE_LABEL } from '@/lib/constants/roles';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { StatusBadge } from '@/components/projects/StatusBadge';
@@ -26,12 +27,6 @@ import type {
 
 const PRIVILEGED_ROLES = ['pm', 'company_admin'] as const;
 type Tab = 'members' | 'updates' | 'analytics';
-
-const ROLE_LABEL: Record<string, string> = {
-  company_admin: 'Admin',
-  pm: 'PM',
-  member: 'Member',
-};
 
 const darkSelect =
   'w-40 rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500';

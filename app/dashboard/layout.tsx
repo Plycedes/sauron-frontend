@@ -6,6 +6,7 @@ import { usePathname } from 'next/navigation';
 import { ProtectedRoute } from '@/lib/auth/ProtectedRoute';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { OnboardingScreen } from '@/components/onboarding/OnboardingScreen';
+import { ROLE_LABEL } from '@/lib/constants/roles';
 import type { UserResponse } from '@/types/user.types';
 import type { MembershipRole } from '@/types/company.types';
 
@@ -24,12 +25,6 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard/team', label: 'Team', privileged: true },
   { href: '/dashboard/ask', label: 'Ask Sauron', privileged: true },
 ];
-
-const ROLES: Record<string, string> = {
-  company_admin: 'ADMIN',
-  pm: 'PM',
-  member: 'MEMBER',
-};
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
@@ -162,7 +157,7 @@ function TopBar() {
     <header className="flex h-14 shrink-0 items-center justify-end gap-3 border-b border-gray-800 bg-gray-900 px-6">
       {user && activeCompany && (
         <span className="rounded bg-gray-800 px-2 py-0.5 text-xs font-medium uppercase text-gray-400">
-          {ROLES[activeCompany.role]}
+          {ROLE_LABEL[activeCompany.role]}
         </span>
       )}
 

@@ -85,7 +85,7 @@ export function AddMemberModal({ isOpen, onClose, projectId, onAdded }: AddMembe
                 <option value="">Select a member...</option>
                 {members.map((m) => (
                   <option key={m._id} value={m.userId}>
-                    {m.userId} — {m.role}
+                    {m.name} — {m.role}
                   </option>
                 ))}
               </select>
