@@ -24,9 +24,9 @@ export default function TeamPage() {
 }
 
 function TeamContent() {
-  const { user, activeCompany } = useAuth();
+  const { activeCompany } = useAuth();
   const companyId = activeCompany?.id ?? null;
-  const isAdmin = user?.role === 'company_admin';
+  const isAdmin = activeCompany?.role === 'company_admin';
 
   const [selectedMember, setSelectedMember] = useState<MembershipResponse | null>(null);
   const [inviteOpen, setInviteOpen] = useState(false);

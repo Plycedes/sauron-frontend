@@ -5,7 +5,7 @@ export interface CompanyResponse {
   ownerId: string;
   createdAt: string;
   updatedAt: string;
-  role: string;
+  role: MembershipRole;
 }
 
 export interface CompanyInput {

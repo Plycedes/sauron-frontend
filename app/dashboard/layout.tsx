@@ -61,7 +61,8 @@ function DashboardShell({ children }: { children: ReactNode }) {
 
 function Sidebar({ user, onLogout }: { user: UserResponse; onLogout: () => Promise<void> }) {
   const pathname = usePathname();
-  const isPrivileged = PRIVILEGED_ROLES.includes(user.role);
+  const { activeCompany } = useAuth();
+  const isPrivileged = !!activeCompany && PRIVILEGED_ROLES.includes(activeCompany.role);
   const visibleItems = NAV_ITEMS.filter((item) => !item.privileged || isPrivileged);
   const [signingOut, setSigningOut] = useState(false);
 

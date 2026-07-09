@@ -13,9 +13,10 @@ import type { ProjectResponse } from '@/types/project.types';
 const PRIVILEGED_ROLES = ['pm', 'company_admin'] as const;
 
 export default function ProjectsPage() {
-  const { user, activeCompany } = useAuth();
+  const { activeCompany } = useAuth();
   const companyId = activeCompany?.id ?? null;
-  const isPrivileged = !!user && (PRIVILEGED_ROLES as readonly string[]).includes(user.role);
+  const isPrivileged =
+    !!activeCompany && (PRIVILEGED_ROLES as readonly string[]).includes(activeCompany.role);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
 

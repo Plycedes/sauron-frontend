@@ -17,7 +17,8 @@ export default function DashboardPage() {
   const { user, activeCompany } = useAuth();
   if (!user) return null;
 
-  const isPrivileged = (PRIVILEGED_ROLES as readonly string[]).includes(user.role);
+  const isPrivileged =
+    !!activeCompany && (PRIVILEGED_ROLES as readonly string[]).includes(activeCompany.role);
   const companyId = activeCompany?.id ?? null;
 
   if (!isPrivileged) {
