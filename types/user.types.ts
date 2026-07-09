@@ -5,7 +5,6 @@ export interface UserResponse {
 	email: string;
 	name: string;
 	role: UserRole;
-	companyId?: string | null;
 	createdAt: string;
 	updatedAt: string;
 }

@@ -1,26 +1,40 @@
 "use client";
 
-import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
+import { createContext, useCallback, useContext, useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import * as authService from "@/lib/api/services/auth.service";
+import * as userService from "@/lib/api/services/user.service";
 import { clearTokens, getAccessToken, setAccessToken, setRefreshToken } from "./token";
 import type { LoginInput, RegisterInput, UserResponse } from "@/types/user.types";
+import type { CompanyResponse } from "@/types/company.types";
 
 export interface AuthContextValue {
 	user: UserResponse | null;
+	companies: CompanyResponse[];
 	isLoading: boolean;
 	isAuthenticated: boolean;
 	login: (input: LoginInput) => Promise<void>;
 	register: (input: RegisterInput) => Promise<void>;
 	logout: () => Promise<void>;
+	refreshCompanies: () => Promise<void>;
 }
 
 export const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
 	const [user, setUser] = useState<UserResponse | null>(null);
+	const [companies, setCompanies] = useState<CompanyResponse[]>([]);
 	const [isLoading, setIsLoading] = useState<boolean>(true);
 	const router = useRouter();
+
+	const refreshCompanies = useCallback(async () => {
+		try {
+			const result = await userService.getMyCompanies();
+			setCompanies(result);
+		} catch {
+			setCompanies([]);
+		}
+	}, []);
 
 	useEffect(() => {
 		let cancelled = false;
@@ -30,11 +44,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 				return;
 			}
 			try {
-				const me = await authService.getCurrentUser();
-				if (!cancelled) setUser(me);
+				const [me, myCompanies] = await Promise.all([
+					authService.getCurrentUser(),
+					userService.getMyCompanies(),
+				]);
+				if (!cancelled) {
+					setUser(me);
+					setCompanies(myCompanies);
+				}
 			} catch {
 				clearTokens();
-				if (!cancelled) setUser(null);
+				if (!cancelled) {
+					setUser(null);
+					setCompanies([]);
+				}
 			} finally {
 				if (!cancelled) setIsLoading(false);
 			}
@@ -49,11 +72,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		const result = await authService.loginUser(input);
 		setAccessToken(result.accessToken);
 		setRefreshToken(result.refreshToken);
-
-		console.log(user);
-
 		setUser(result.user);
-		// Dashboard page arrives in a future chat; this redirect will 404 until then.
+		const myCompanies = await userService.getMyCompanies().catch(() => []);
+		setCompanies(myCompanies);
 		router.push("/dashboard");
 	};
 
@@ -62,7 +83,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		setAccessToken(result.accessToken);
 		setRefreshToken(result.refreshToken);
 		setUser(result.user);
-		// Dashboard page arrives in a future chat; this redirect will 404 until then.
+		setCompanies([]);
 		router.push("/dashboard");
 	};
 
@@ -74,16 +95,19 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		}
 		clearTokens();
 		setUser(null);
+		setCompanies([]);
 		router.push("/login");
 	};
 
 	const value: AuthContextValue = {
 		user,
+		companies,
 		isLoading,
 		isAuthenticated: user !== null,
 		login,
 		register,
 		logout,
+		refreshCompanies,
 	};
 
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

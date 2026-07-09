@@ -31,8 +31,8 @@ const REDIRECT_DELAY_MS = 1500;
 
 export default function NewUpdatePage() {
     const router = useRouter();
-    const { user } = useAuth();
-    const companyId = user?.companyId ?? null;
+    const { user, companies } = useAuth();
+    const companyId = companies[0]?.id ?? null;
 
     const [projectId, setProjectId] = useState('');
     const [completed, setCompleted] = useState('');

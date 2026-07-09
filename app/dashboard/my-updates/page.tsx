@@ -13,8 +13,8 @@ import type { ProjectResponse } from '@/types/project.types';
 import type { UpdateResponse } from '@/types/update.types';
 
 export default function MyUpdatesPage() {
-    const { user } = useAuth();
-    const companyId = user?.companyId ?? null;
+    const { user, companies } = useAuth();
+    const companyId = companies[0]?.id ?? null;
     const userId = user?.id ?? null;
 
     const [projectId, setProjectId] = useState('');

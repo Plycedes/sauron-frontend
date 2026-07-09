@@ -33,12 +33,11 @@ export default function DashboardLayout({ children }: { children: ReactNode }) {
 }
 
 function DashboardShell({ children }: { children: ReactNode }) {
-  const { user, logout } = useAuth();
+  const { user, companies, logout } = useAuth();
 
   if (!user) return null;
-  // console.log(user);
 
-  const needsCompanySetup = user.companyId == null && user.role !== 'super_admin';
+  const needsCompanySetup = companies.length === 0 && user.role !== 'super_admin';
   if (needsCompanySetup) {
     return <CreateCompanyForm />;
   }

@@ -14,11 +14,11 @@ import type { ProjectStatsResponse } from '@/types/analytics.types';
 const PRIVILEGED_ROLES = ['pm', 'company_admin'] as const;
 
 export default function DashboardPage() {
-    const { user } = useAuth();
+    const { user, companies } = useAuth();
     if (!user) return null;
 
     const isPrivileged = (PRIVILEGED_ROLES as readonly string[]).includes(user.role);
-    const companyId = user.companyId ?? null;
+    const companyId = companies[0]?.id ?? null;
 
     if (!isPrivileged) {
         return (

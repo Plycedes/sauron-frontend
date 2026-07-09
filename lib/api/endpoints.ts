@@ -8,6 +8,7 @@ export const ENDPOINTS = {
     },
     users: {
         byId: (id: string) => `/users/${id}`,
+        myCompanies: '/users/me/companies',
     },
     companies: {
         create: '/companies',
