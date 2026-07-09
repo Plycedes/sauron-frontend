@@ -61,7 +61,7 @@ export default function NewUpdatePage() {
 
   const myProjects = useMemo(() => {
     if (!projects || !user) return [];
-    return projects.filter((p) => p.memberIds.includes(user?.id ?? ''));
+    return projects.filter((p) => p.members.some((m) => m._id === (user?.id ?? '')));
   }, [projects, user]);
 
   const isValid =

@@ -90,7 +90,7 @@ function ProjectCard({ project }: { project: ProjectResponse }) {
       </p>
       <div className="mt-auto flex items-center justify-between pt-4">
         <span className="text-xs text-gray-500">
-          {project.memberIds.length} member{project.memberIds.length === 1 ? '' : 's'}
+          {project.members.length} member{project.members.length === 1 ? '' : 's'}
         </span>
         <Link
           href={`/dashboard/projects/${project._id}`}

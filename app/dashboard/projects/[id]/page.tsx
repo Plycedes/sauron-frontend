@@ -27,6 +27,12 @@ import type {
 const PRIVILEGED_ROLES = ['pm', 'company_admin'] as const;
 type Tab = 'members' | 'updates' | 'analytics';
 
+const ROLE_LABEL: Record<string, string> = {
+  company_admin: 'Admin',
+  pm: 'PM',
+  member: 'Member',
+};
+
 const darkSelect =
   'w-40 rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500';
 
@@ -200,20 +206,25 @@ function MembersTab({
         </div>
       )}
 
-      {project.memberIds.length === 0 ? (
+      {project.members.length === 0 ? (
         <p className="rounded-lg border border-gray-800 bg-gray-900 p-6 text-center text-sm text-gray-400">
           No members yet.
         </p>
       ) : (
         <ul className="divide-y divide-gray-800 rounded-lg border border-gray-800 bg-gray-900">
-          {project.memberIds.map((memberId) => (
-            <li key={memberId} className="flex items-center justify-between px-4 py-3">
-              <span className="font-mono text-sm text-white">{memberId}</span>
+          {project.members.map((member) => (
+            <li key={member._id} className="flex items-center justify-between px-4 py-3">
+              <div className="flex items-center gap-3">
+                <span className="text-sm font-medium text-white">{member.fullName}</span>
+                <span className="rounded-full bg-gray-800 px-2 py-0.5 text-xs font-medium text-gray-400">
+                  {ROLE_LABEL[member.role] ?? member.role}
+                </span>
+              </div>
               {isPrivileged && (
                 <Button
                   variant="secondary"
                   size="sm"
-                  onClick={() => void onRemove(memberId)}
+                  onClick={() => void onRemove(member._id)}
                   disabled={isRemoving}
                 >
                   Remove

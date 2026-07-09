@@ -31,7 +31,7 @@ export default function MyUpdatesPage() {
 
   const myProjects = useMemo(() => {
     if (!projects || !user) return [];
-    return projects.filter((p) => p.memberIds.includes(user?.id ?? ''));
+    return projects.filter((p) => p.members.some((m) => m._id === (user?.id ?? '')));
   }, [projects, user]);
 
   const { data, isLoading, error, refetch } = useApi<UpdateResponse[]>(

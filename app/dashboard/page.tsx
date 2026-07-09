@@ -74,8 +74,8 @@ function PrivilegedSummary({ companyId }: { companyId: string | null }) {
     if (!projects) return 0;
     const ids = new Set<string>();
     for (const p of projects) {
-      for (const memberId of p.memberIds) {
-        ids.add(memberId);
+      for (const m of p.members) {
+        ids.add(m._id);
       }
     }
     return ids.size;
