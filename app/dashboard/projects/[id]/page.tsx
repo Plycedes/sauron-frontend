@@ -34,7 +34,7 @@ export default function ProjectDetailPage() {
   const params = useParams<{ id: string }>();
   const id = params?.id;
   const { activeCompany } = useAuth();
-  const companyId = activeCompany?.id ?? null;
+  const companyId = activeCompany?._id ?? null;
   const isPrivileged =
     !!activeCompany && (PRIVILEGED_ROLES as readonly string[]).includes(activeCompany.role);
 
@@ -60,7 +60,7 @@ export default function ProjectDetailPage() {
 
   if (!id) return null;
 
-  const project = projects?.find((p) => p.id === id) ?? null;
+  const project = projects?.find((p) => p._id === id) ?? null;
 
   if (isLoading) {
     return <p className="text-sm text-gray-500">Loading project...</p>;
@@ -424,7 +424,7 @@ function UpdatesTab({ projectId }: { projectId: string }) {
       {!isLoading && !error && sorted.length > 0 && (
         <div className="space-y-3">
           {sorted.map((u) => (
-            <UpdateCard key={u.id} update={u} showUser />
+            <UpdateCard key={u._id} update={u} showUser />
           ))}
         </div>
       )}

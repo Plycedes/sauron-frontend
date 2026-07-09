@@ -17,8 +17,8 @@ const darkSelect =
 
 export default function MyUpdatesPage() {
   const { user, activeCompany } = useAuth();
-  const companyId = activeCompany?.id ?? null;
-  const userId = user?.id ?? null;
+  const companyId = activeCompany?._id ?? null;
+  const userId = user?._id ?? null;
 
   const [projectId, setProjectId] = useState('');
   const [from, setFrom] = useState('');
@@ -31,7 +31,7 @@ export default function MyUpdatesPage() {
 
   const myProjects = useMemo(() => {
     if (!projects || !user) return [];
-    return projects.filter((p) => p.members.some((m) => m.userId === user.id));
+    return projects.filter((p) => p.members.some((m) => m.userId === user._id));
   }, [projects, user]);
 
   const { data, isLoading, error, refetch } = useApi<UpdateResponse[]>(
@@ -72,7 +72,7 @@ export default function MyUpdatesPage() {
           >
             <option value="">All projects</option>
             {myProjects.map((p) => (
-              <option key={p.id} value={p.id}>
+              <option key={p._id} value={p._id}>
                 {p.name}
               </option>
             ))}
@@ -146,7 +146,7 @@ export default function MyUpdatesPage() {
       {!isLoading && !error && sorted.length > 0 && (
         <div className="space-y-3">
           {sorted.map((u) => (
-            <UpdateCard key={u.id} update={u} />
+            <UpdateCard key={u._id} update={u} />
           ))}
         </div>
       )}

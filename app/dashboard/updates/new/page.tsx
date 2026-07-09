@@ -43,7 +43,7 @@ const darkTextarea =
 export default function NewUpdatePage() {
   const router = useRouter();
   const { user, activeCompany } = useAuth();
-  const companyId = activeCompany?.id ?? null;
+  const companyId = activeCompany?._id ?? null;
 
   const [projectId, setProjectId] = useState('');
   const [completed, setCompleted] = useState('');
@@ -61,7 +61,7 @@ export default function NewUpdatePage() {
 
   const myProjects = useMemo(() => {
     if (!projects || !user) return [];
-    return projects.filter((p) => p.members.some((m) => m.userId === user.id));
+    return projects.filter((p) => p.members.some((m) => m.userId === user._id));
   }, [projects, user]);
 
   const isValid =
@@ -145,7 +145,7 @@ export default function NewUpdatePage() {
               Select a project
             </option>
             {myProjects.map((p) => (
-              <option key={p.id} value={p.id}>
+              <option key={p._id} value={p._id}>
                 {p.name}
               </option>
             ))}

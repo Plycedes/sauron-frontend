@@ -192,10 +192,10 @@ function TopBar() {
                 <p className="px-3 py-2 text-sm text-gray-500">No companies</p>
               )}
               {companies.map((c) => {
-                const isActive = c.id === activeCompany.id;
+                const isActive = c._id === activeCompany._id;
                 return (
                   <button
-                    key={c.id}
+                    key={c._id}
                     type="button"
                     onClick={() => {
                       setActiveCompany(c);

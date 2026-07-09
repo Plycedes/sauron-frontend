@@ -19,7 +19,7 @@ export interface AddMemberModalProps {
 
 export function AddMemberModal({ isOpen, onClose, projectId, onAdded }: AddMemberModalProps) {
   const { activeCompany } = useAuth();
-  const companyId = activeCompany?.id ?? null;
+  const companyId = activeCompany?._id ?? null;
 
   const [userId, setUserId] = useState('');
 
@@ -84,7 +84,7 @@ export function AddMemberModal({ isOpen, onClose, projectId, onAdded }: AddMembe
               >
                 <option value="">Select a member...</option>
                 {members.map((m) => (
-                  <option key={m.id} value={m.userId}>
+                  <option key={m._id} value={m.userId}>
                     {m.userId} — {m.role}
                   </option>
                 ))}

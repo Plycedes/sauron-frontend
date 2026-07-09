@@ -25,7 +25,7 @@ export default function TeamPage() {
 
 function TeamContent() {
   const { activeCompany } = useAuth();
-  const companyId = activeCompany?.id ?? null;
+  const companyId = activeCompany?._id ?? null;
   const isAdmin = activeCompany?.role === 'company_admin';
 
   const [selectedMember, setSelectedMember] = useState<MembershipResponse | null>(null);
@@ -128,7 +128,7 @@ function MemberList({
       {members.map((m) => {
         const isSelected = m.userId === selectedId;
         return (
-          <li key={m.id}>
+          <li key={m._id}>
             <button
               type="button"
               onClick={() => onSelect(m)}
@@ -225,7 +225,7 @@ function MemberDetail({ member }: { member: MembershipResponse }) {
               {[...updates]
                 .sort((a, b) => b.createdAt.localeCompare(a.createdAt))
                 .map((u) => (
-                  <UpdateCard key={u.id} update={u} showUser />
+                  <UpdateCard key={u._id} update={u} showUser />
                 ))}
             </div>
           )}

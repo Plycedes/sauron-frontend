@@ -14,7 +14,7 @@ const PRIVILEGED_ROLES = ['pm', 'company_admin'] as const;
 
 export default function ProjectsPage() {
   const { activeCompany } = useAuth();
-  const companyId = activeCompany?.id ?? null;
+  const companyId = activeCompany?._id ?? null;
   const isPrivileged =
     !!activeCompany && (PRIVILEGED_ROLES as readonly string[]).includes(activeCompany.role);
 
@@ -64,7 +64,7 @@ export default function ProjectsPage() {
       {!isLoading && !error && data && data.length > 0 && (
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
           {data.map((project) => (
-            <ProjectCard key={project.id} project={project} />
+            <ProjectCard key={project._id} project={project} />
           ))}
         </div>
       )}
@@ -93,7 +93,7 @@ function ProjectCard({ project }: { project: ProjectResponse }) {
           {project.members.length} member{project.members.length === 1 ? '' : 's'}
         </span>
         <Link
-          href={`/dashboard/projects/${project.id}`}
+          href={`/dashboard/projects/${project._id}`}
           className="text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors"
         >
           View →

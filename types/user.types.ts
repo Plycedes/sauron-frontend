@@ -1,7 +1,7 @@
 export type UserRole = 'super_admin' | 'company_admin' | 'pm' | 'member';
 
 export interface UserResponse {
-  id: string;
+  _id: string;
   email: string;
   fullName: string;
   role: UserRole;

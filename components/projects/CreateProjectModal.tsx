@@ -37,7 +37,7 @@ export function CreateProjectModal({ isOpen, onClose, onCreated }: CreateProject
     if (!user) return;
     try {
       await mutate({
-        companyId: activeCompany?.id ?? '',
+        companyId: activeCompany?._id ?? '',
         name,
         description: description || undefined,
       });

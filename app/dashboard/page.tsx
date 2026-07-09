@@ -19,7 +19,7 @@ export default function DashboardPage() {
 
   const isPrivileged =
     !!activeCompany && (PRIVILEGED_ROLES as readonly string[]).includes(activeCompany.role);
-  const companyId = activeCompany?.id ?? null;
+  const companyId = activeCompany?._id ?? null;
 
   if (!isPrivileged) {
     return (
@@ -82,8 +82,8 @@ function PrivilegedSummary({ companyId }: { companyId: string | null }) {
   }, [projects]);
 
   const { data: latestStats, isLoading: latestStatsLoading } = useApi<ProjectStatsResponse>(
-    () => analyticsService.getProjectStats(latestProject?.id ?? ''),
-    { enabled: latestProject !== null, deps: [latestProject?.id] },
+    () => analyticsService.getProjectStats(latestProject?._id ?? ''),
+    { enabled: latestProject !== null, deps: [latestProject?._id] },
   );
 
   if (isLoading) {
@@ -128,7 +128,7 @@ function PrivilegedSummary({ companyId }: { companyId: string | null }) {
               <h2 className="mt-1 text-lg font-semibold text-white">{latestProject.name}</h2>
             </div>
             <Link
-              href={`/dashboard/projects/${latestProject.id}`}
+              href={`/dashboard/projects/${latestProject._id}`}
               className="text-sm font-medium text-orange-400 hover:text-orange-300 transition-colors"
             >
               View →

@@ -35,7 +35,7 @@ export default function AskPage() {
 
 function AskContent() {
   const { activeCompany } = useAuth();
-  const companyId = activeCompany?.id ?? null;
+  const companyId = activeCompany?._id ?? null;
 
   const [question, setQuestion] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
@@ -141,7 +141,7 @@ function AskContent() {
               >
                 <option value="">All projects</option>
                 {(projects ?? []).map((p) => (
-                  <option key={p.id} value={p.id}>
+                  <option key={p._id} value={p._id}>
                     {p.name}
                   </option>
                 ))}

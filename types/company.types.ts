@@ -1,5 +1,5 @@
 export interface CompanyResponse {
-  id: string;
+  _id: string;
   name: string;
   slug?: string;
   ownerId: string;
@@ -17,7 +17,7 @@ export interface CompanyInput {
 export type MembershipRole = 'company_admin' | 'pm' | 'member';
 
 export interface MembershipResponse {
-  id: string;
+  _id: string;
   userId: string;
   companyId: string;
   role: MembershipRole;
