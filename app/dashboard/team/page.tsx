@@ -45,17 +45,21 @@ function TeamContent() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-semibold text-gray-900">Team</h1>
-          <p className="mt-1 text-sm text-gray-600">View team members and their update history.</p>
+          <h1 className="text-3xl font-semibold text-white">Team</h1>
+          <p className="mt-1 text-sm text-gray-400">View team members and their update history.</p>
         </div>
-        {isAdmin && <Button onClick={() => setInviteOpen(true)}>+ Invite member</Button>}
+        {isAdmin && (
+          <Button variant="orange" onClick={() => setInviteOpen(true)}>
+            + Invite member
+          </Button>
+        )}
       </div>
 
       {isLoading && <MembersSkeleton />}
 
       {error && (
-        <div className="rounded-md border border-red-200 bg-red-50 p-4">
-          <p className="text-sm text-red-800">{error.message}</p>
+        <div className="rounded-md border border-red-800/50 bg-red-950/60 p-4">
+          <p className="text-sm text-red-400">{error.message}</p>
           <Button variant="secondary" size="sm" className="mt-2" onClick={() => void refetch()}>
             Retry
           </Button>
@@ -76,7 +80,7 @@ function TeamContent() {
             {selectedMember ? (
               <MemberDetail member={selectedMember} />
             ) : (
-              <div className="flex h-48 items-center justify-center rounded-lg border border-dashed border-gray-300 bg-white">
+              <div className="flex h-48 items-center justify-center rounded-lg border border-dashed border-gray-700 bg-gray-900">
                 <p className="text-sm text-gray-500">Select a team member to view details</p>
               </div>
             )}
@@ -113,14 +117,14 @@ function MemberList({
 
   if (members.length === 0) {
     return (
-      <div className="rounded-lg border border-gray-200 bg-white p-6 text-center">
+      <div className="rounded-lg border border-gray-800 bg-gray-900 p-6 text-center">
         <p className="text-sm text-gray-500">No members yet. Invite your team to get started.</p>
       </div>
     );
   }
 
   return (
-    <ul className="divide-y divide-gray-200 rounded-lg border border-gray-200 bg-white">
+    <ul className="divide-y divide-gray-800 rounded-lg border border-gray-800 bg-gray-900">
       {members.map((m) => {
         const isSelected = m.userId === selectedId;
         return (
@@ -129,12 +133,12 @@ function MemberList({
               type="button"
               onClick={() => onSelect(m)}
               className={`flex w-full items-center justify-between px-4 py-3 text-left transition-colors ${
-                isSelected ? 'bg-blue-50' : 'hover:bg-gray-50'
+                isSelected ? 'bg-orange-900/30' : 'hover:bg-gray-800'
               }`}
             >
               <div>
                 <p
-                  className={`text-sm font-medium ${isSelected ? 'text-blue-700' : 'text-gray-900'}`}
+                  className={`text-sm font-medium ${isSelected ? 'text-orange-400' : 'text-white'}`}
                 >
                   {m.userId}
                 </p>
@@ -145,10 +149,10 @@ function MemberList({
               <span
                 className={`rounded px-2 py-0.5 text-xs font-medium uppercase ${
                   m.role === 'company_admin'
-                    ? 'bg-orange-100 text-orange-800'
+                    ? 'bg-orange-900/50 text-orange-400'
                     : m.role === 'pm'
-                      ? 'bg-purple-100 text-purple-800'
-                      : 'bg-gray-100 text-gray-700'
+                      ? 'bg-purple-900/50 text-purple-400'
+                      : 'bg-gray-800 text-gray-400'
                 }`}
               >
                 {ROLE_LABEL[m.role]}
@@ -179,9 +183,9 @@ function MemberDetail({ member }: { member: MembershipResponse }) {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-lg border border-gray-200 bg-white p-5">
+      <div className="rounded-lg border border-gray-800 bg-gray-900 p-5">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-gray-900">{member.userId}</h2>
+          <h2 className="text-lg font-semibold text-white">{member.userId}</h2>
           <Button variant="secondary" size="sm" onClick={() => setShowUpdates((v) => !v)}>
             {showUpdates ? 'Hide updates' : 'View updates'}
           </Button>
@@ -189,7 +193,7 @@ function MemberDetail({ member }: { member: MembershipResponse }) {
 
         {statsLoading && <p className="mt-3 text-sm text-gray-500">Loading stats...</p>}
 
-        {statsError && <p className="mt-3 text-sm text-red-600">{statsError.message}</p>}
+        {statsError && <p className="mt-3 text-sm text-red-400">{statsError.message}</p>}
 
         {stats && (
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -206,12 +210,12 @@ function MemberDetail({ member }: { member: MembershipResponse }) {
 
       {showUpdates && (
         <div className="space-y-3">
-          <h3 className="text-sm font-medium text-gray-700">Recent updates</h3>
+          <h3 className="text-sm font-medium text-gray-300">Recent updates</h3>
 
           {updatesLoading && <p className="text-sm text-gray-500">Loading updates...</p>}
 
           {!updatesLoading && updates && updates.length === 0 && (
-            <p className="rounded-lg border border-gray-200 bg-white p-6 text-center text-sm text-gray-500">
+            <p className="rounded-lg border border-gray-800 bg-gray-900 p-6 text-center text-sm text-gray-500">
               No updates yet.
             </p>
           )}
@@ -236,10 +240,10 @@ function MembersSkeleton() {
     <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
       <div className="animate-pulse space-y-2 lg:col-span-1">
         {[0, 1, 2, 3].map((i) => (
-          <div key={i} className="h-14 rounded-lg bg-gray-200" />
+          <div key={i} className="h-14 rounded-lg bg-gray-800" />
         ))}
       </div>
-      <div className="h-48 animate-pulse rounded-lg bg-gray-200 lg:col-span-2" />
+      <div className="h-48 animate-pulse rounded-lg bg-gray-800 lg:col-span-2" />
     </div>
   );
 }

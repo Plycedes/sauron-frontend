@@ -12,26 +12,26 @@ export interface QueryResultCardProps {
 
 export function QueryResultCard({ question, answer, sources, confidence }: QueryResultCardProps) {
   return (
-    <article className="overflow-hidden rounded-lg border border-gray-200 bg-white shadow-sm">
-      <div className="border-b border-gray-200 bg-gray-50 px-4 py-3">
+    <article className="overflow-hidden rounded-lg border border-gray-800 bg-gray-900 shadow-sm">
+      <div className="border-b border-gray-800 bg-gray-800/50 px-4 py-3">
         <p className="text-xs font-medium uppercase tracking-wide text-gray-500">You asked</p>
-        <p className="mt-1 text-sm text-gray-900">{question}</p>
+        <p className="mt-1 text-sm text-gray-200">{question}</p>
       </div>
 
       <div className="px-4 py-4">
-        <p className="whitespace-pre-wrap text-sm text-gray-900">{answer}</p>
+        <p className="whitespace-pre-wrap text-sm text-gray-300">{answer}</p>
         {confidence !== undefined && confidence > 0 && (
           <p className="mt-3 text-xs text-gray-500">Confidence: {Math.round(confidence * 100)}%</p>
         )}
       </div>
 
       {sources.length > 0 && (
-        <div className="border-t border-gray-200 bg-gray-50 px-4 py-3">
+        <div className="border-t border-gray-800 bg-gray-800/50 px-4 py-3">
           <details>
             <summary
               className={cn(
-                'flex cursor-pointer list-none items-center gap-2 text-sm font-medium text-blue-700',
-                'hover:text-blue-800',
+                'flex cursor-pointer list-none items-center gap-2 text-sm font-medium text-orange-400',
+                'hover:text-orange-300',
               )}
             >
               <span aria-hidden>▶</span>
@@ -51,7 +51,7 @@ export function QueryResultCard({ question, answer, sources, confidence }: Query
 
 function SourceRow({ source, index }: { source: RagSource; index: number }) {
   return (
-    <li className="rounded border border-gray-200 bg-white p-3 text-sm">
+    <li className="rounded border border-gray-800 bg-gray-900 p-3 text-sm">
       <div className="mb-2 flex flex-wrap items-center gap-2 text-xs text-gray-500">
         <span className="font-mono">#{index + 1}</span>
         <span>·</span>
@@ -69,12 +69,12 @@ function SourceRow({ source, index }: { source: RagSource; index: number }) {
           </>
         )}
         {source.category && (
-          <span className="ml-auto rounded bg-blue-50 px-2 py-0.5 font-medium text-blue-700 capitalize">
+          <span className="ml-auto rounded bg-orange-900/50 px-2 py-0.5 font-medium text-orange-400 capitalize">
             {source.category}
           </span>
         )}
       </div>
-      <p className="whitespace-pre-wrap text-gray-900">{source.text}</p>
+      <p className="whitespace-pre-wrap text-gray-300">{source.text}</p>
     </li>
   );
 }

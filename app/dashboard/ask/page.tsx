@@ -101,22 +101,22 @@ function AskContent() {
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-semibold text-gray-900">Ask Sauron</h1>
-        <p className="mt-1 text-sm text-gray-600">
+        <h1 className="text-3xl font-semibold text-white">Ask Sauron</h1>
+        <p className="mt-1 text-sm text-gray-400">
           Query your team&apos;s updates in natural language. Results are grounded in cited sources.
         </p>
       </div>
 
-      <section className="rounded-lg border border-gray-200 bg-white">
+      <section className="rounded-lg border border-gray-800 bg-gray-900">
         <button
           type="button"
           onClick={() => setFilterOpen((v) => !v)}
           className="flex w-full items-center justify-between px-4 py-3 text-left"
         >
-          <span className="flex items-center gap-2 text-sm font-medium text-gray-900">
+          <span className="flex items-center gap-2 text-sm font-medium text-gray-200">
             Filters
             {activeFilterCount > 0 && (
-              <span className="rounded-full bg-blue-100 px-2 py-0.5 text-xs font-medium text-blue-700">
+              <span className="rounded-full bg-orange-900/50 px-2 py-0.5 text-xs font-medium text-orange-400">
                 {activeFilterCount} active
               </span>
             )}
@@ -125,11 +125,11 @@ function AskContent() {
         </button>
 
         {filterOpen && (
-          <div className="space-y-4 border-t border-gray-200 px-4 py-4">
+          <div className="space-y-4 border-t border-gray-800 px-4 py-4">
             <div>
               <label
                 htmlFor="filterProject"
-                className="mb-1 block text-xs font-medium text-gray-600"
+                className="mb-1 block text-xs font-medium text-gray-400"
               >
                 Project
               </label>
@@ -137,7 +137,7 @@ function AskContent() {
                 id="filterProject"
                 value={projectId}
                 onChange={(e) => setProjectId(e.target.value)}
-                className="w-full rounded-md border border-gray-300 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
               >
                 <option value="">All projects</option>
                 {(projects ?? []).map((p) => (
@@ -149,7 +149,7 @@ function AskContent() {
             </div>
 
             <div>
-              <label htmlFor="filterUser" className="mb-1 block text-xs font-medium text-gray-600">
+              <label htmlFor="filterUser" className="mb-1 block text-xs font-medium text-gray-400">
                 User ID
               </label>
               <Input
@@ -158,6 +158,7 @@ function AskContent() {
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
                 placeholder="e.g. jdoe"
+                className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:ring-orange-500 focus:border-orange-500"
               />
               <p className="mt-1 text-xs text-gray-500">
                 Filter results to a specific teammate by userId.
@@ -168,7 +169,7 @@ function AskContent() {
               <div>
                 <label
                   htmlFor="filterFrom"
-                  className="mb-1 block text-xs font-medium text-gray-600"
+                  className="mb-1 block text-xs font-medium text-gray-400"
                 >
                   From
                 </label>
@@ -177,10 +178,11 @@ function AskContent() {
                   type="date"
                   value={dateFrom}
                   onChange={(e) => setDateFrom(e.target.value)}
+                  className="bg-gray-800 border-gray-700 text-white focus:ring-orange-500 focus:border-orange-500"
                 />
               </div>
               <div>
-                <label htmlFor="filterTo" className="mb-1 block text-xs font-medium text-gray-600">
+                <label htmlFor="filterTo" className="mb-1 block text-xs font-medium text-gray-400">
                   To
                 </label>
                 <Input
@@ -188,6 +190,7 @@ function AskContent() {
                   type="date"
                   value={dateTo}
                   onChange={(e) => setDateTo(e.target.value)}
+                  className="bg-gray-800 border-gray-700 text-white focus:ring-orange-500 focus:border-orange-500"
                 />
               </div>
             </div>
@@ -201,21 +204,32 @@ function AskContent() {
         )}
       </section>
 
-      <form onSubmit={onSubmit} className="rounded-lg border border-gray-200 bg-white p-4">
+      <form onSubmit={onSubmit} className="rounded-lg border border-gray-800 bg-gray-900 p-4">
         <Textarea
           rows={3}
           value={question}
           onChange={(e) => setQuestion(e.target.value)}
           onKeyDown={onKeyDown}
           placeholder="Ask anything about your team's progress..."
+          className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:ring-orange-500 focus:border-orange-500"
         />
         <div className="mt-3 flex items-center justify-between">
           <p className="text-xs text-gray-500">
-            Press <kbd className="rounded border border-gray-300 bg-gray-50 px-1">Enter</kbd> to
-            ask, <kbd className="rounded border border-gray-300 bg-gray-50 px-1">Shift+Enter</kbd>{' '}
+            Press{' '}
+            <kbd className="rounded border border-gray-700 bg-gray-800 px-1 text-gray-300">
+              Enter
+            </kbd>{' '}
+            to ask,{' '}
+            <kbd className="rounded border border-gray-700 bg-gray-800 px-1 text-gray-300">
+              Shift+Enter
+            </kbd>{' '}
             for newline.
           </p>
-          <Button type="submit" disabled={isLoading || question.trim().length === 0 || !companyId}>
+          <Button
+            variant="orange"
+            type="submit"
+            disabled={isLoading || question.trim().length === 0 || !companyId}
+          >
             {isLoading ? 'Thinking...' : 'Ask'}
           </Button>
         </div>
@@ -224,8 +238,8 @@ function AskContent() {
       {isLoading && <ThinkingIndicator />}
 
       {error && (
-        <div className="rounded-md border border-red-200 bg-red-50 p-4">
-          <p className="text-sm text-red-800">{error.message}</p>
+        <div className="rounded-md border border-red-800/50 bg-red-950/60 p-4">
+          <p className="text-sm text-red-400">{error.message}</p>
           <Button variant="secondary" size="sm" className="mt-2" onClick={() => reset()}>
             Dismiss
           </Button>
@@ -233,18 +247,18 @@ function AskContent() {
       )}
 
       {showEmpty && (
-        <div className="rounded-lg border border-dashed border-gray-300 bg-white p-10 text-center">
-          <h2 className="text-lg font-semibold text-gray-900">
+        <div className="rounded-lg border border-dashed border-gray-700 bg-gray-900 p-10 text-center">
+          <h2 className="text-lg font-semibold text-white">
             Ask anything about your team&apos;s progress
           </h2>
-          <p className="mt-1 text-sm text-gray-600">Try one of these to get started:</p>
+          <p className="mt-1 text-sm text-gray-400">Try one of these to get started:</p>
           <div className="mt-4 flex flex-wrap justify-center gap-2">
             {EXAMPLE_QUESTIONS.map((q) => (
               <button
                 key={q}
                 type="button"
                 onClick={() => setQuestion(q)}
-                className="rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 hover:border-blue-500 hover:text-blue-700"
+                className="rounded-full border border-gray-700 bg-gray-800 px-3 py-1 text-sm text-gray-300 hover:border-orange-500 hover:text-orange-400 transition-colors"
               >
                 {q}
               </button>
@@ -271,13 +285,13 @@ function AskContent() {
 
 function ThinkingIndicator() {
   return (
-    <div className="flex items-center gap-3 rounded-lg border border-blue-200 bg-blue-50 px-4 py-3">
+    <div className="flex items-center gap-3 rounded-lg border border-orange-800/50 bg-orange-950/40 px-4 py-3">
       <span className="flex gap-1" aria-hidden>
-        <span className="h-2 w-2 animate-bounce rounded-full bg-blue-600 [animation-delay:-0.3s]" />
-        <span className="h-2 w-2 animate-bounce rounded-full bg-blue-600 [animation-delay:-0.15s]" />
-        <span className="h-2 w-2 animate-bounce rounded-full bg-blue-600" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-orange-500 [animation-delay:-0.3s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-orange-500 [animation-delay:-0.15s]" />
+        <span className="h-2 w-2 animate-bounce rounded-full bg-orange-500" />
       </span>
-      <p className="text-sm font-medium text-blue-900">Thinking...</p>
+      <p className="text-sm font-medium text-orange-300">Thinking...</p>
     </div>
   );
 }
