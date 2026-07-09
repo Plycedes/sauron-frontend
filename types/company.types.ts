@@ -13,3 +13,13 @@ export interface CompanyInput {
   slug?: string;
   domain?: string;
 }
+
+export type MembershipRole = 'company_admin' | 'pm' | 'member';
+
+export interface MembershipResponse {
+  id: string;
+  userId: string;
+  companyId: string;
+  role: MembershipRole;
+  joinedAt: string;
+}

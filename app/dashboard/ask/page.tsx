@@ -1,9 +1,5 @@
 'use client';
 
-// TODO: multi-turn conversation history is not yet supported — each query is
-// independent. Future enhancement: maintain conversation context across
-// queries so the LLM can answer follow-up questions in the same session.
-
 import { useState, type FormEvent, type KeyboardEvent } from 'react';
 import { ProtectedRoute } from '@/lib/auth/ProtectedRoute';
 import { useAuth } from '@/lib/auth/AuthContext';
@@ -38,15 +34,15 @@ export default function AskPage() {
 }
 
 function AskContent() {
-  const { companies } = useAuth();
-  const companyId = companies[0]?.id ?? null;
+  const { activeCompany } = useAuth();
+  const companyId = activeCompany?.id ?? null;
 
   const [question, setQuestion] = useState('');
   const [filterOpen, setFilterOpen] = useState(false);
   const [projectId, setProjectId] = useState('');
   const [userId, setUserId] = useState('');
-  const [from, setFrom] = useState('');
-  const [to, setTo] = useState('');
+  const [dateFrom, setDateFrom] = useState('');
+  const [dateTo, setDateTo] = useState('');
   const [history, setHistory] = useState<HistoryEntry[]>([]);
 
   const { data: projects } = useApi<ProjectResponse[]>(
@@ -58,26 +54,28 @@ function AskContent() {
     ragService.queryRag(input),
   );
 
-  const activeFilterCount = (projectId ? 1 : 0) + (userId ? 1 : 0) + (from ? 1 : 0) + (to ? 1 : 0);
+  const activeFilterCount =
+    (projectId ? 1 : 0) + (userId ? 1 : 0) + (dateFrom ? 1 : 0) + (dateTo ? 1 : 0);
 
   const clearFilters = () => {
     setProjectId('');
     setUserId('');
-    setFrom('');
-    setTo('');
+    setDateFrom('');
+    setDateTo('');
   };
 
   const submit = async () => {
     const trimmed = question.trim();
-    if (!trimmed || isLoading) return;
+    if (!trimmed || isLoading || !companyId) return;
 
     try {
       const result = await mutate({
-        query: trimmed,
+        question: trimmed,
+        companyId,
         projectId: projectId || undefined,
         userId: userId.trim() || undefined,
-        from: from || undefined,
-        to: to || undefined,
+        dateFrom: dateFrom || undefined,
+        dateTo: dateTo || undefined,
       });
       setHistory((prev) => [{ id: `${Date.now()}`, question: trimmed, result }, ...prev]);
       setQuestion('');
@@ -96,10 +94,6 @@ function AskContent() {
       e.preventDefault();
       void submit();
     }
-  };
-
-  const onExampleClick = (example: string) => {
-    setQuestion(example);
   };
 
   const showEmpty = history.length === 0 && !isLoading;
@@ -156,17 +150,15 @@ function AskContent() {
 
             <div>
               <label htmlFor="filterUser" className="mb-1 block text-xs font-medium text-gray-600">
-                User
+                User ID
               </label>
               <Input
                 id="filterUser"
                 type="text"
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
-                placeholder="User ID"
+                placeholder="e.g. jdoe"
               />
-              {/* TODO: backend needs a GET /companies/:id/users endpoint
-                                so this can be a searchable picker instead of a raw id input. */}
               <p className="mt-1 text-xs text-gray-500">
                 Filter results to a specific teammate by userId.
               </p>
@@ -183,8 +175,8 @@ function AskContent() {
                 <Input
                   id="filterFrom"
                   type="date"
-                  value={from}
-                  onChange={(e) => setFrom(e.target.value)}
+                  value={dateFrom}
+                  onChange={(e) => setDateFrom(e.target.value)}
                 />
               </div>
               <div>
@@ -194,8 +186,8 @@ function AskContent() {
                 <Input
                   id="filterTo"
                   type="date"
-                  value={to}
-                  onChange={(e) => setTo(e.target.value)}
+                  value={dateTo}
+                  onChange={(e) => setDateTo(e.target.value)}
                 />
               </div>
             </div>
@@ -223,7 +215,7 @@ function AskContent() {
             ask, <kbd className="rounded border border-gray-300 bg-gray-50 px-1">Shift+Enter</kbd>{' '}
             for newline.
           </p>
-          <Button type="submit" disabled={isLoading || question.trim().length === 0}>
+          <Button type="submit" disabled={isLoading || question.trim().length === 0 || !companyId}>
             {isLoading ? 'Thinking...' : 'Ask'}
           </Button>
         </div>
@@ -251,7 +243,7 @@ function AskContent() {
               <button
                 key={q}
                 type="button"
-                onClick={() => onExampleClick(q)}
+                onClick={() => setQuestion(q)}
                 className="rounded-full border border-gray-300 bg-white px-3 py-1 text-sm text-gray-700 hover:border-blue-500 hover:text-blue-700"
               >
                 {q}
@@ -269,7 +261,6 @@ function AskContent() {
               question={entry.question}
               answer={entry.result.answer}
               sources={entry.result.sources}
-              confidence={entry.result.confidence}
             />
           ))}
         </div>

@@ -21,7 +21,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard/projects', label: 'Projects' },
   { href: '/dashboard/my-updates', label: 'My Updates' },
   { href: '/dashboard/team', label: 'Team', privileged: true },
-  { href: '/dashboard/rag', label: 'Ask PulseIQ', privileged: true },
+  { href: '/dashboard/ask', label: 'Ask PulseIQ', privileged: true },
 ];
 
 const ROLES: Record<string, string> = {

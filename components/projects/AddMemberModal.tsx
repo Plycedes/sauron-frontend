@@ -2,9 +2,13 @@
 
 import { useState, type FormEvent } from 'react';
 import { useMutation } from '@/lib/hooks/useMutation';
+import { useApi } from '@/lib/hooks/useApi';
+import { useAuth } from '@/lib/auth/AuthContext';
 import * as projectService from '@/lib/api/services/project.service';
+import * as companyService from '@/lib/api/services/company.service';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import type { MembershipResponse } from '@/types/company.types';
 
 export interface AddMemberModalProps {
   isOpen: boolean;
@@ -13,10 +17,16 @@ export interface AddMemberModalProps {
   onAdded: () => void;
 }
 
-// TODO: backend needs a GET /companies/:id/users endpoint to render a proper
-// searchable member picker. For now we add by exact userId.
 export function AddMemberModal({ isOpen, onClose, projectId, onAdded }: AddMemberModalProps) {
+  const { activeCompany } = useAuth();
+  const companyId = activeCompany?.id ?? null;
+
   const [userId, setUserId] = useState('');
+
+  const { data: members } = useApi<MembershipResponse[]>(
+    () => companyService.getCompanyMembers(companyId ?? ''),
+    { enabled: isOpen && companyId !== null, deps: [companyId, isOpen] },
+  );
 
   const { mutate, isLoading, error, reset } = useMutation<void, string>((id) =>
     projectService.addProjectMember(projectId, id),
@@ -32,6 +42,7 @@ export function AddMemberModal({ isOpen, onClose, projectId, onAdded }: AddMembe
 
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!userId.trim()) return;
     try {
       await mutate(userId.trim());
       onAdded();
@@ -52,31 +63,52 @@ export function AddMemberModal({ isOpen, onClose, projectId, onAdded }: AddMembe
       >
         <h2 className="text-xl font-semibold text-white">Add member</h2>
         <p className="mt-1 text-sm text-gray-400">
-          Enter the userId of the teammate you want to add to this project.
-        </p>
-        <p className="mt-2 rounded-md bg-amber-950/60 border border-amber-800/50 p-2 text-xs text-amber-400">
-          <strong>TODO:</strong> replace this text input with a searchable picker once the backend
-          exposes <code>GET /companies/:id/users</code>.
+          Select a company member to add to this project.
         </p>
 
         <form onSubmit={onSubmit} className="mt-4 space-y-4">
-          <div>
-            <label
-              htmlFor="memberUserId"
-              className="mb-1.5 block text-sm font-medium text-gray-300"
-            >
-              User ID
-            </label>
-            <Input
-              id="memberUserId"
-              type="text"
-              required
-              value={userId}
-              onChange={(e) => setUserId(e.target.value)}
-              placeholder="e.g. jdoe"
-              className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:ring-orange-500 focus:border-orange-500"
-            />
-          </div>
+          {members && members.length > 0 ? (
+            <div>
+              <label
+                htmlFor="memberSelect"
+                className="mb-1.5 block text-sm font-medium text-gray-300"
+              >
+                Team member
+              </label>
+              <select
+                id="memberSelect"
+                required
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                className="w-full rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500"
+              >
+                <option value="">Select a member...</option>
+                {members.map((m) => (
+                  <option key={m.id} value={m.userId}>
+                    {m.userId} — {m.role}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : (
+            <div>
+              <label
+                htmlFor="memberUserId"
+                className="mb-1.5 block text-sm font-medium text-gray-300"
+              >
+                User ID
+              </label>
+              <Input
+                id="memberUserId"
+                type="text"
+                required
+                value={userId}
+                onChange={(e) => setUserId(e.target.value)}
+                placeholder="e.g. jdoe"
+                className="bg-gray-800 border-gray-700 text-white placeholder:text-gray-500 focus:ring-orange-500 focus:border-orange-500"
+              />
+            </div>
+          )}
 
           {error && (
             <div className="rounded-lg bg-red-950/60 border border-red-800/50 px-4 py-3">
