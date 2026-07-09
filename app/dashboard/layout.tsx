@@ -44,22 +44,30 @@ function DashboardShell({ children }: { children: ReactNode }) {
 
   return (
     <div className="flex h-screen bg-gray-950">
-      <Sidebar user={user} />
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <TopBar user={user} onLogout={logout} />
-        <main className="flex-1 overflow-y-auto p-6">{children}</main>
-      </div>
+      <Sidebar user={user} onLogout={logout} />
+      <main className="flex-1 overflow-y-auto p-6">{children}</main>
     </div>
   );
 }
 
-function Sidebar({ user }: { user: UserResponse }) {
+function Sidebar({ user, onLogout }: { user: UserResponse; onLogout: () => Promise<void> }) {
   const pathname = usePathname();
   const isPrivileged = PRIVILEGED_ROLES.includes(user.role);
   const visibleItems = NAV_ITEMS.filter((item) => !item.privileged || isPrivileged);
+  const [signingOut, setSigningOut] = useState(false);
+
+  const handleLogout = async () => {
+    setSigningOut(true);
+    try {
+      await onLogout();
+    } catch {
+      setSigningOut(false);
+    }
+  };
 
   return (
     <aside className="flex w-60 flex-col border-r border-gray-800 bg-gray-900">
+      {/* Brand */}
       <div className="flex h-14 items-center gap-2.5 border-b border-gray-800 px-5">
         <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-600">
           <svg
@@ -83,6 +91,8 @@ function Sidebar({ user }: { user: UserResponse }) {
         </div>
         <span className="text-base font-semibold text-white">Sauron</span>
       </div>
+
+      {/* Nav */}
       <nav className="flex-1 space-y-0.5 p-3">
         {visibleItems.map((item) => {
           const active = isActive(pathname, item.href);
@@ -101,39 +111,24 @@ function Sidebar({ user }: { user: UserResponse }) {
           );
         })}
       </nav>
-    </aside>
-  );
-}
 
-function TopBar({ user, onLogout }: { user: UserResponse; onLogout: () => Promise<void> }) {
-  const [signingOut, setSigningOut] = useState(false);
-
-  const handleLogout = async () => {
-    setSigningOut(true);
-    try {
-      await onLogout();
-    } catch {
-      setSigningOut(false);
-    }
-  };
-
-  return (
-    <header className="flex h-14 items-center justify-end gap-4 border-b border-gray-800 bg-gray-900 px-6">
-      <div className="flex items-center gap-2 text-sm">
-        <span className="font-medium text-white">{user.name}</span>
-        <span className="rounded bg-gray-800 px-2 py-0.5 text-xs font-medium uppercase text-gray-400">
-          {user.role.replace('_', ' ')}
-        </span>
+      {/* User footer */}
+      <div className="border-t border-gray-800 p-3">
+        <div className="flex items-center justify-between gap-2 rounded-md px-2 py-2">
+          <div className="min-w-0">
+            <p className="truncate text-sm font-medium text-white">{user.fullName}</p>
+          </div>
+          <button
+            type="button"
+            onClick={handleLogout}
+            disabled={signingOut}
+            className="shrink-0 rounded-md border border-gray-700 px-2.5 py-1.5 text-xs font-medium text-gray-400 hover:border-red-800 hover:text-red-400 disabled:opacity-50 transition-colors"
+          >
+            {signingOut ? '…' : 'Logout'}
+          </button>
+        </div>
       </div>
-      <button
-        type="button"
-        onClick={handleLogout}
-        disabled={signingOut}
-        className="rounded-md border border-gray-700 px-3 py-1.5 text-sm font-medium text-gray-400 hover:border-red-800 hover:text-red-400 disabled:opacity-50 transition-colors"
-      >
-        {signingOut ? 'Signing out…' : 'Logout'}
-      </button>
-    </header>
+    </aside>
   );
 }
 
