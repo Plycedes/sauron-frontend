@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ProtectedRoute } from '@/lib/auth/ProtectedRoute';
@@ -24,6 +24,12 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard/rag', label: 'Ask PulseIQ', privileged: true },
 ];
 
+const ROLES: Record<string, string> = {
+  company_admin: 'ADMIN',
+  pm: 'PM',
+  member: 'MEMBER',
+};
+
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <ProtectedRoute>
@@ -45,7 +51,10 @@ function DashboardShell({ children }: { children: ReactNode }) {
   return (
     <div className="flex h-screen bg-gray-950">
       <Sidebar user={user} onLogout={logout} />
-      <main className="flex-1 overflow-y-auto p-6">{children}</main>
+      <div className="flex flex-1 flex-col overflow-hidden">
+        <TopBar />
+        <main className="flex-1 overflow-y-auto p-6">{children}</main>
+      </div>
     </div>
   );
 }
@@ -129,6 +138,92 @@ function Sidebar({ user, onLogout }: { user: UserResponse; onLogout: () => Promi
         </div>
       </div>
     </aside>
+  );
+}
+
+function TopBar() {
+  const { user, companies, activeCompany, setActiveCompany } = useAuth();
+  const [open, setOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handler);
+    return () => document.removeEventListener('mousedown', handler);
+  }, []);
+
+  return (
+    <header className="flex h-14 shrink-0 items-center justify-end gap-3 border-b border-gray-800 bg-gray-900 px-6">
+      {user && activeCompany && (
+        <span className="rounded bg-gray-800 px-2 py-0.5 text-xs font-medium uppercase text-gray-400">
+          {ROLES[activeCompany.role]}
+        </span>
+      )}
+
+      {activeCompany && (
+        <div ref={dropdownRef} className="relative">
+          <button
+            type="button"
+            onClick={() => setOpen((o) => !o)}
+            className="flex items-center gap-1.5 rounded-md border border-gray-700 px-3 py-1.5 text-sm font-medium text-gray-200 hover:bg-gray-800 transition-colors"
+          >
+            <span className="max-w-[160px] truncate">{activeCompany.name}</span>
+            <svg
+              viewBox="0 0 20 20"
+              fill="currentColor"
+              className={`h-4 w-4 shrink-0 text-gray-400 transition-transform duration-150 ${open ? 'rotate-180' : ''}`}
+            >
+              <path
+                fillRule="evenodd"
+                d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"
+                clipRule="evenodd"
+              />
+            </svg>
+          </button>
+
+          {open && (
+            <div className="absolute right-0 top-full z-50 mt-1.5 w-56 rounded-lg border border-gray-800 bg-gray-900 py-1 shadow-xl">
+              {companies.length === 0 && (
+                <p className="px-3 py-2 text-sm text-gray-500">No companies</p>
+              )}
+              {companies.map((c) => {
+                const isActive = c.id === activeCompany.id;
+                return (
+                  <button
+                    key={c.id}
+                    type="button"
+                    onClick={() => {
+                      setActiveCompany(c);
+                      setOpen(false);
+                    }}
+                    className={`flex w-full items-center gap-2 px-3 py-2 text-left text-sm transition-colors ${
+                      isActive
+                        ? 'bg-orange-900/30 text-orange-400'
+                        : 'text-gray-300 hover:bg-gray-800'
+                    }`}
+                  >
+                    <span className="flex-1 truncate">{c.name}</span>
+                    {isActive && (
+                      <svg viewBox="0 0 20 20" fill="currentColor" className="h-4 w-4 shrink-0">
+                        <path
+                          fillRule="evenodd"
+                          d="M16.704 4.153a.75.75 0 0 1 .143 1.052l-8 10.5a.75.75 0 0 1-1.127.075l-4.5-4.5a.75.75 0 0 1 1.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 0 1 1.05-.143Z"
+                          clipRule="evenodd"
+                        />
+                      </svg>
+                    )}
+                  </button>
+                );
+              })}
+            </div>
+          )}
+        </div>
+      )}
+    </header>
   );
 }
 

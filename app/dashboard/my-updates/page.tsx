@@ -16,8 +16,8 @@ const darkSelect =
   'w-48 rounded-md border border-gray-700 bg-gray-800 px-3 py-2 text-white focus:outline-none focus:ring-2 focus:ring-orange-500';
 
 export default function MyUpdatesPage() {
-  const { user, companies } = useAuth();
-  const companyId = companies[0]?.id ?? null;
+  const { user, activeCompany } = useAuth();
+  const companyId = activeCompany?.id ?? null;
   const userId = user?.id ?? null;
 
   const [projectId, setProjectId] = useState('');

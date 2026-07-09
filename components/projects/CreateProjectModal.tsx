@@ -15,7 +15,7 @@ export interface CreateProjectModalProps {
 }
 
 export function CreateProjectModal({ isOpen, onClose, onCreated }: CreateProjectModalProps) {
-  const { user, companies } = useAuth();
+  const { user, activeCompany } = useAuth();
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
 
@@ -37,7 +37,7 @@ export function CreateProjectModal({ isOpen, onClose, onCreated }: CreateProject
     if (!user) return;
     try {
       await mutate({
-        companyId: companies[0]?.id ?? '',
+        companyId: activeCompany?.id ?? '',
         name,
         description: description || undefined,
       });

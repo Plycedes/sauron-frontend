@@ -33,8 +33,8 @@ const darkSelect =
 export default function ProjectDetailPage() {
   const params = useParams<{ id: string }>();
   const id = params?.id;
-  const { user, companies } = useAuth();
-  const companyId = companies[0]?.id ?? null;
+  const { user, activeCompany } = useAuth();
+  const companyId = activeCompany?.id ?? null;
   const isPrivileged = !!user && (PRIVILEGED_ROLES as readonly string[]).includes(user.role);
 
   const [activeTab, setActiveTab] = useState<Tab>('members');

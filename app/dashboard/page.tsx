@@ -14,18 +14,16 @@ import type { ProjectStatsResponse } from '@/types/analytics.types';
 const PRIVILEGED_ROLES = ['pm', 'company_admin'] as const;
 
 export default function DashboardPage() {
-  const { user, companies } = useAuth();
+  const { user, activeCompany } = useAuth();
   if (!user) return null;
 
   const isPrivileged = (PRIVILEGED_ROLES as readonly string[]).includes(user.role);
-  const companyId = companies[0]?.id ?? null;
+  const companyId = activeCompany?.id ?? null;
 
   if (!isPrivileged) {
     return (
       <div className="space-y-6">
-        <h1 className="text-3xl font-semibold text-white">
-          Welcome back, {user.fullName ?? user.name}
-        </h1>
+        <h1 className="text-3xl font-semibold text-white">Welcome back, {user.fullName}</h1>
         <div className="rounded-lg border border-orange-800/30 bg-orange-950/40 p-6">
           <h2 className="text-lg font-semibold text-orange-300">Submit today&apos;s update</h2>
           <p className="mt-1 text-sm text-orange-200/70">
@@ -44,9 +42,7 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-6">
-      <h1 className="text-3xl font-semibold text-white">
-        Welcome back, {user.fullName ?? user.name}
-      </h1>
+      <h1 className="text-3xl font-semibold text-white">Welcome back, {user.fullName}</h1>
       <PrivilegedSummary companyId={companyId} />
     </div>
   );

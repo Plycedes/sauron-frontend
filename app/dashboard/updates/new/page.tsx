@@ -42,8 +42,8 @@ const darkTextarea =
 
 export default function NewUpdatePage() {
   const router = useRouter();
-  const { user, companies } = useAuth();
-  const companyId = companies[0]?.id ?? null;
+  const { user, activeCompany } = useAuth();
+  const companyId = activeCompany?.id ?? null;
 
   const [projectId, setProjectId] = useState('');
   const [completed, setCompleted] = useState('');
