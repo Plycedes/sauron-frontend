@@ -101,7 +101,7 @@ function AskContent() {
   return (
     <div className="mx-auto flex max-w-3xl flex-col gap-6">
       <div>
-        <h1 className="text-3xl font-semibold text-gray-900">Ask PulseIQ</h1>
+        <h1 className="text-3xl font-semibold text-gray-900">Ask Sauron</h1>
         <p className="mt-1 text-sm text-gray-600">
           Query your team&apos;s updates in natural language. Results are grounded in cited sources.
         </p>
