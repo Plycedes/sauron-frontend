@@ -1,20 +1,14 @@
-export type ProjectStatus = 'active' | 'paused' | 'archived' | 'completed';
-
-export interface ProjectMember {
-  userId: string;
-  role: 'pm' | 'member';
-  addedAt: string;
-}
+export type ProjectStatus = 'active' | 'on_hold' | 'completed' | 'archived';
 
 export interface ProjectResponse {
   _id: string;
   name: string;
-  description?: string;
+  description: string;
   companyId: string;
+  createdBy: string;
+  memberIds: string[];
   status: ProjectStatus;
-  members: ProjectMember[];
   createdAt: string;
-  updatedAt: string;
 }
 
 export interface ProjectInput {

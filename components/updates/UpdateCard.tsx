@@ -28,7 +28,7 @@ export function UpdateCard({ update, showUser }: UpdateCardProps) {
     <article className="rounded-lg border border-gray-800 bg-gray-900 p-5 shadow-sm">
       {showUser && (
         <p className="mb-2 text-xs text-gray-500">
-          Submitted by <span className="font-mono text-gray-400">{update.authorId}</span>
+          Submitted by <span className="font-mono text-gray-400">{update.userId}</span>
         </p>
       )}
 
@@ -44,7 +44,7 @@ export function UpdateCard({ update, showUser }: UpdateCardProps) {
       <dl className="mt-4 space-y-3 text-sm">
         <div>
           <dt className="font-medium text-gray-300">Completed</dt>
-          <dd className="mt-1 whitespace-pre-wrap text-gray-100">{update.body}</dd>
+          <dd className="mt-1 whitespace-pre-wrap text-gray-100">{update.completed}</dd>
         </div>
         <div>
           <dt className="font-medium text-gray-300">Next steps</dt>

@@ -18,7 +18,7 @@ const darkSelect =
 export default function MyUpdatesPage() {
   const { user, activeCompany } = useAuth();
   const companyId = activeCompany?._id ?? null;
-  const userId = user?._id ?? null;
+  const userId = user?.id ?? null;
 
   const [projectId, setProjectId] = useState('');
   const [from, setFrom] = useState('');
@@ -31,7 +31,7 @@ export default function MyUpdatesPage() {
 
   const myProjects = useMemo(() => {
     if (!projects || !user) return [];
-    return projects.filter((p) => p.members.some((m) => m.userId === user._id));
+    return projects.filter((p) => p.memberIds.includes(user?.id ?? ''));
   }, [projects, user]);
 
   const { data, isLoading, error, refetch } = useApi<UpdateResponse[]>(

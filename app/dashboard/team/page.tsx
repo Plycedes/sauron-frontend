@@ -197,12 +197,15 @@ function MemberDetail({ member }: { member: MembershipResponse }) {
 
         {stats && (
           <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            <StatCard label="Total updates" value={stats.totalUpdates} />
-            <StatCard label="Projects" value={stats.projectsContributed} />
-            <StatCard label="Avg confidence" value={Number(stats.averageConfidence).toFixed(2)} />
+            <StatCard
+              label="Total updates"
+              value={stats.projects.reduce((sum, p) => sum + p.updateCount, 0)}
+            />
+            <StatCard label="Projects" value={stats.projects.length} />
+            <StatCard label="Streak" value={`${stats.currentStreak}d`} />
             <StatCard
               label="Last update"
-              value={stats.lastUpdateAt ? formatRelative(stats.lastUpdateAt) : '—'}
+              value={stats.lastUpdateDate ? formatRelative(stats.lastUpdateDate) : '—'}
             />
           </div>
         )}

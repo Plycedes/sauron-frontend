@@ -1,12 +1,16 @@
-export type UserRole = 'super_admin' | 'company_admin' | 'pm' | 'member';
+export type UserRole = 'super_admin' | 'user';
+export type UserStatus = 'active' | 'pending' | 'suspended';
 
 export interface UserResponse {
-  _id: string;
-  email: string;
+  id: string;
+  userId: string;
   fullName: string;
+  email: string;
   role: UserRole;
+  avatar?: string;
+  status: UserStatus;
   createdAt: string;
-  updatedAt: string;
+  lastLoginAt: string;
 }
 
 export interface RegisterInput {

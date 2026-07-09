@@ -1,33 +1,55 @@
-export interface ProjectStats {
-    projectId: string;
-    totalUpdates: number;
-    uniqueContributors: number;
-    averageConfidence: number;
-    blockerCount: number;
-    lastActivityAt: string | null;
+import type { UpdateCategory } from './update.types';
+
+export interface ConfidenceBreakdown {
+  low: number;
+  medium: number;
+  high: number;
 }
 
-export interface UserStats {
-    userId: string;
-    totalUpdates: number;
-    projectsContributed: number;
-    averageConfidence: number;
-    lastUpdateAt: string | null;
+export type CategoryBreakdown = Record<UpdateCategory, number>;
+
+export interface MemberStats {
+  userId: string;
+  totalHours: number;
+  updateCount: number;
+  confidenceBreakdown: ConfidenceBreakdown;
+}
+
+export interface ProjectStatsResponse {
+  projectId: string;
+  companyId: string;
+  totalHours: number;
+  totalUpdates: number;
+  categoryBreakdown: CategoryBreakdown;
+  dateRange: { from: string | null; to: string | null };
+  members: MemberStats[];
+}
+
+export interface PerProjectStats {
+  projectId: string;
+  totalHours: number;
+  updateCount: number;
+  avgConfidence: number;
+}
+
+export interface UserStatsResponse {
+  userId: string;
+  companyId: string;
+  lastUpdateDate: string | null;
+  currentStreak: number;
+  categoryBreakdown: CategoryBreakdown;
+  projects: PerProjectStats[];
 }
 
 export interface ConfidenceTrendPoint {
-    bucket: string;
-    averageConfidence: number;
-    sampleSize: number;
+  date: string;
+  low: number;
+  medium: number;
+  high: number;
 }
 
-export interface StaleMember {
-    userId: string;
-    name: string;
-    lastUpdateAt: string | null;
-    daysSinceLastUpdate: number | null;
+export interface StaleMemberResponse {
+  userId: string;
+  lastUpdateDate: string | null;
+  daysSinceUpdate: number;
 }
-
-export type ProjectStatsResponse = ProjectStats;
-export type UserStatsResponse = UserStats;
-export type StaleMemberResponse = StaleMember;

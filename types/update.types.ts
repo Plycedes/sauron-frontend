@@ -4,24 +4,27 @@ export type UpdateConfidence = 'low' | 'medium' | 'high';
 
 export interface UpdateResponse {
   _id: string;
+  userId: string;
   projectId: string;
-  authorId: string;
-  category: UpdateCategory;
-  confidence: UpdateConfidence;
-  body: string;
-  hoursSpent: number;
+  companyId: string;
+  date: string;
+  completed: string;
   nextSteps: string;
   blockers: string;
+  category: UpdateCategory;
+  hoursSpent: number;
+  confidence: UpdateConfidence;
+  embeddingId?: string;
   createdAt: string;
   updatedAt: string;
 }
 
 export interface UpdateInput {
   projectId: string;
-  category: UpdateCategory;
-  confidence: UpdateConfidence;
-  body: string;
-  hoursSpent: number;
+  completed: string;
   nextSteps: string;
   blockers: string;
+  category: UpdateCategory;
+  hoursSpent: number;
+  confidence: UpdateConfidence;
 }

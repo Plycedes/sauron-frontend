@@ -200,31 +200,20 @@ function MembersTab({
         </div>
       )}
 
-      {project.members.length === 0 ? (
+      {project.memberIds.length === 0 ? (
         <p className="rounded-lg border border-gray-800 bg-gray-900 p-6 text-center text-sm text-gray-400">
           No members yet.
         </p>
       ) : (
         <ul className="divide-y divide-gray-800 rounded-lg border border-gray-800 bg-gray-900">
-          {project.members.map((member) => (
-            <li key={member.userId} className="flex items-center justify-between px-4 py-3">
-              <div className="flex items-center gap-3">
-                <span className="font-mono text-sm text-white">{member.userId}</span>
-                <span
-                  className={
-                    member.role === 'pm'
-                      ? 'rounded bg-purple-900/50 px-2 py-0.5 text-xs font-medium uppercase text-purple-400'
-                      : 'rounded bg-gray-800 px-2 py-0.5 text-xs font-medium uppercase text-gray-400'
-                  }
-                >
-                  {member.role}
-                </span>
-              </div>
+          {project.memberIds.map((memberId) => (
+            <li key={memberId} className="flex items-center justify-between px-4 py-3">
+              <span className="font-mono text-sm text-white">{memberId}</span>
               {isPrivileged && (
                 <Button
                   variant="secondary"
                   size="sm"
-                  onClick={() => void onRemove(member.userId)}
+                  onClick={() => void onRemove(memberId)}
                   disabled={isRemoving}
                 >
                   Remove
@@ -234,24 +223,6 @@ function MembersTab({
           ))}
         </ul>
       )}
-    </div>
-  );
-}
-
-function PlaceholderCard({ title, body }: { title: string; body: string }) {
-  return (
-    <div className="rounded-lg border border-gray-800 bg-gray-900 p-8 text-center">
-      <h2 className="text-lg font-semibold text-white">{title}</h2>
-      <p className="mt-1 text-sm text-gray-400">{body}</p>
-    </div>
-  );
-}
-
-function GapCard({ title, message }: { title: string; message: string }) {
-  return (
-    <div className="rounded-lg border border-amber-800/50 bg-amber-950/40 p-4">
-      <p className="text-sm font-medium text-amber-400">{title}</p>
-      <p className="mt-1 text-xs text-amber-500">{message}</p>
     </div>
   );
 }
@@ -300,9 +271,24 @@ function AnalyticsTab({ projectId }: { projectId: string }) {
     <div className="space-y-6">
       <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <StatCard label="Total updates" value={stats.totalUpdates} />
-        <StatCard label="Contributors" value={stats.uniqueContributors} />
-        <StatCard label="Avg confidence" value={Number(stats.averageConfidence).toFixed(2)} />
-        <StatCard label="Open blockers" value={stats.blockerCount} />
+        <StatCard label="Contributors" value={stats.members.length} />
+        <StatCard label="Total hours" value={stats.totalHours} />
+        <StatCard
+          label="Last activity"
+          value={stats.dateRange.to ? formatRelative(stats.dateRange.to) : '—'}
+        />
+      </div>
+
+      <div className="rounded-lg border border-gray-800 bg-gray-900 p-5 shadow-sm">
+        <h2 className="mb-3 text-lg font-semibold text-white">Category breakdown</h2>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
+          {(Object.entries(stats.categoryBreakdown) as [string, number][]).map(([cat, count]) => (
+            <div key={cat} className="rounded border border-gray-700 bg-gray-800 px-3 py-2">
+              <p className="text-xs capitalize text-gray-400">{cat}</p>
+              <p className="text-lg font-semibold text-white">{count}</p>
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="rounded-lg border border-gray-800 bg-gray-900 p-5 shadow-sm">
@@ -310,17 +296,6 @@ function AnalyticsTab({ projectId }: { projectId: string }) {
         {trendQ.isLoading && <p className="mt-3 text-sm text-gray-500">Loading trend...</p>}
         {trendQ.error && <p className="mt-3 text-sm text-red-400">{trendQ.error.message}</p>}
         {trendQ.data && <ConfidenceTrendChart data={trendQ.data} />}
-      </div>
-
-      <div className="grid grid-cols-1 gap-4 lg:grid-cols-2">
-        <GapCard
-          title="Category breakdown"
-          message="ProjectStats doesn't return per-category counts yet. Backend needs to extend the response."
-        />
-        <GapCard
-          title="Per-member breakdown"
-          message="ProjectStats doesn't return per-member hours / update counts / confidence split yet. Backend needs to extend the response."
-        />
       </div>
 
       {staleQ.data && staleQ.data.length > 0 && (
@@ -335,13 +310,9 @@ function AnalyticsTab({ projectId }: { projectId: string }) {
                 key={m.userId}
                 className="flex items-center justify-between rounded border border-yellow-800/40 bg-gray-900 px-3 py-2 text-sm"
               >
-                <span className="font-medium text-white">{m.name?.trim() || m.userId}</span>
+                <span className="font-medium text-white">{m.userId}</span>
                 <span className="text-xs text-yellow-500">
-                  {m.daysSinceLastUpdate == null
-                    ? 'no update yet'
-                    : `no update in ${m.daysSinceLastUpdate} day${
-                        m.daysSinceLastUpdate === 1 ? '' : 's'
-                      }`}
+                  {`no update in ${m.daysSinceUpdate} day${m.daysSinceUpdate === 1 ? '' : 's'}`}
                 </span>
               </li>
             ))}
@@ -430,4 +401,13 @@ function UpdatesTab({ projectId }: { projectId: string }) {
       )}
     </div>
   );
+}
+
+function formatRelative(iso: string): string {
+  const diffMs = Date.now() - new Date(iso).getTime();
+  const days = Math.floor(diffMs / 86_400_000);
+  if (days === 0) return 'today';
+  if (days === 1) return 'yesterday';
+  if (days < 30) return `${days}d ago`;
+  return new Date(iso).toLocaleDateString();
 }

@@ -74,8 +74,8 @@ function PrivilegedSummary({ companyId }: { companyId: string | null }) {
     if (!projects) return 0;
     const ids = new Set<string>();
     for (const p of projects) {
-      for (const m of p.members) {
-        ids.add(m.userId);
+      for (const memberId of p.memberIds) {
+        ids.add(memberId);
       }
     }
     return ids.size;
@@ -111,8 +111,8 @@ function PrivilegedSummary({ companyId }: { companyId: string | null }) {
           value={
             latestStatsLoading
               ? '...'
-              : latestStats?.lastActivityAt
-                ? formatRelative(latestStats.lastActivityAt)
+              : latestStats?.dateRange.to
+                ? formatRelative(latestStats.dateRange.to)
                 : '—'
           }
         />
@@ -142,14 +142,14 @@ function PrivilegedSummary({ companyId }: { companyId: string | null }) {
                 <p className="mt-1 text-xl font-semibold text-white">{latestStats.totalUpdates}</p>
               </div>
               <div>
-                <p className="text-gray-500">Avg confidence</p>
+                <p className="text-gray-500">Contributors</p>
                 <p className="mt-1 text-xl font-semibold text-white">
-                  {Number(latestStats.averageConfidence).toFixed(2)}
+                  {latestStats.members.length}
                 </p>
               </div>
               <div>
-                <p className="text-gray-500">Open blockers</p>
-                <p className="mt-1 text-xl font-semibold text-white">{latestStats.blockerCount}</p>
+                <p className="text-gray-500">Total hours</p>
+                <p className="mt-1 text-xl font-semibold text-white">{latestStats.totalHours}</p>
               </div>
             </div>
           )}
