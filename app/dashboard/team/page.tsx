@@ -72,7 +72,7 @@ function TeamContent() {
             <MemberList
               members={members}
               selectedId={selectedMember?.userId ?? null}
-              onSelect={setSelectedMember}
+              onSelect={(m) => setSelectedMember((prev) => (prev?.userId === m.userId ? null : m))}
             />
           </div>
 
@@ -140,10 +140,10 @@ function MemberList({
                 <p
                   className={`text-sm font-medium ${isSelected ? 'text-orange-400' : 'text-white'}`}
                 >
-                  {m.userId}
+                  {m.name?.trim() || m.userId}
                 </p>
                 <p className="text-xs text-gray-500">
-                  Joined {new Date(m.joinedAt).toLocaleDateString()}
+                  {`Joined ${new Date(m.joinedAt).toLocaleDateString()}`}
                 </p>
               </div>
               <span
@@ -185,7 +185,7 @@ function MemberDetail({ member }: { member: MembershipResponse }) {
     <div className="space-y-4">
       <div className="rounded-lg border border-gray-800 bg-gray-900 p-5">
         <div className="flex items-center justify-between">
-          <h2 className="text-lg font-semibold text-white">{member.userId}</h2>
+          <h2 className="text-lg font-semibold text-white">{member.name}</h2>
           <Button variant="secondary" size="sm" onClick={() => setShowUpdates((v) => !v)}>
             {showUpdates ? 'Hide updates' : 'View updates'}
           </Button>

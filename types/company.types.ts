@@ -22,4 +22,5 @@ export interface MembershipResponse {
   companyId: string;
   role: MembershipRole;
   joinedAt: string;
+  name?: string;
 }
