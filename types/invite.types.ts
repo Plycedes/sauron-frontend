@@ -5,6 +5,7 @@ export interface InviteResponse {
   _id: string;
   email: string;
   companyId: string;
+  companyName?: string;
   role: InviteRole;
   status: InviteStatus;
   token: string;

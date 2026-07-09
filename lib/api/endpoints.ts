@@ -18,6 +18,7 @@ export const ENDPOINTS = {
   invites: {
     send: '/invites/send',
     accept: '/invites/accept',
+    pending: '/invites/pending',
   },
   projects: {
     create: '/projects',

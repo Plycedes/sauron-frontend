@@ -5,10 +5,11 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ProtectedRoute } from '@/lib/auth/ProtectedRoute';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { CreateCompanyForm } from '@/components/onboarding/CreateCompanyForm';
-import type { UserResponse, UserRole } from '@/types/user.types';
+import { OnboardingScreen } from '@/components/onboarding/OnboardingScreen';
+import type { UserResponse } from '@/types/user.types';
+import type { MembershipRole } from '@/types/company.types';
 
-const PRIVILEGED_ROLES: UserRole[] = ['pm', 'company_admin'];
+const PRIVILEGED_ROLES: MembershipRole[] = ['pm', 'company_admin'];
 
 interface NavItem {
   href: string;
@@ -45,7 +46,7 @@ function DashboardShell({ children }: { children: ReactNode }) {
 
   const needsCompanySetup = companies.length === 0 && user.role !== 'super_admin';
   if (needsCompanySetup) {
-    return <CreateCompanyForm />;
+    return <OnboardingScreen />;
   }
 
   return (
