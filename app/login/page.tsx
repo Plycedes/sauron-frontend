@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
+import { SauronMark } from '@/components/brand/SauronMark';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -38,24 +39,7 @@ export default function LoginPage() {
         <div className="relative">
           {/* Eye icon */}
           <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
-            <svg
-              viewBox="0 0 24 24"
-              className="h-7 w-7 text-white"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.964-7.178Z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-              />
-            </svg>
+            <SauronMark className="h-7 w-7" />
           </div>
           <h1 className="mt-4 text-4xl font-bold text-white tracking-tight">Sauron</h1>
           <p className="mt-2 text-orange-200 text-lg">All-seeing project intelligence.</p>
@@ -81,24 +65,7 @@ export default function LoginPage() {
         {/* Mobile brand mark */}
         <div className="mb-8 flex flex-col items-center lg:hidden">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-600">
-            <svg
-              viewBox="0 0 24 24"
-              className="h-7 w-7 text-white"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth={1.5}
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M2.036 12.322a1.012 1.012 0 0 1 0-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.964-7.178Z"
-              />
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 12a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
-              />
-            </svg>
+            <SauronMark className="h-7 w-7" />
           </div>
           <span className="mt-3 text-2xl font-bold text-white">Sauron</span>
         </div>
