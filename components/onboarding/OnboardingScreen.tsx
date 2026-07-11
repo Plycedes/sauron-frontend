@@ -40,7 +40,7 @@ export function OnboardingScreen() {
             />
           </svg>
         </div>
-        <span className="mt-3 text-2xl font-bold text-white">Sauron</span>
+        <span className="mt-3 text-2xl font-bold text-white">Attune</span>
       </div>
 
       <div className="w-full max-w-sm">

@@ -1,10 +1,10 @@
 import { cn } from '@/lib/utils/cn';
 
-interface SauronMarkProps {
+interface AttuneMarkProps {
   className?: string;
 }
 
-export function SauronMark({ className }: SauronMarkProps) {
+export function AttuneMark({ className }: AttuneMarkProps) {
   return (
     <svg
       viewBox="0 0 24 24"

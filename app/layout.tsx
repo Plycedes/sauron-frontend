@@ -14,9 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Sauron — All-seeing project intelligence.',
-  description:
-    'Real-time visibility across every project, every team, every update — in one place.',
+  title: 'Attune — Team alignment, made simple.',
+  description: 'Daily rituals that keep your entire team aligned — without another meeting.',
 };
 
 export default function RootLayout({

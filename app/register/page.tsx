@@ -59,8 +59,8 @@ export default function RegisterPage() {
               />
             </svg>
           </div>
-          <h1 className="mt-4 text-4xl font-bold text-white tracking-tight">Sauron</h1>
-          <p className="mt-2 text-orange-200 text-lg">All-seeing project intelligence.</p>
+          <h1 className="mt-4 text-4xl font-bold text-white tracking-tight">Attune</h1>
+          <p className="mt-2 text-orange-200 text-lg">Stay in tune with your team.</p>
         </div>
 
         <div className="relative space-y-8">
@@ -108,13 +108,13 @@ export default function RegisterPage() {
               />
             </svg>
           </div>
-          <span className="mt-3 text-2xl font-bold text-white">Sauron</span>
+          <span className="mt-3 text-2xl font-bold text-white">Attune</span>
         </div>
 
         <div className="w-full max-w-sm">
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-white">Create your account</h2>
-            <p className="mt-1 text-gray-400 text-sm">Join your team on Sauron.</p>
+            <p className="mt-1 text-gray-400 text-sm">Join your team on Attune.</p>
           </div>
 
           <form onSubmit={onSubmit} className="space-y-4">

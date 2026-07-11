@@ -46,7 +46,7 @@ const FEATURES: Feature[] = [
     ),
   },
   {
-    title: 'Ask Sauron',
+    title: 'Ask Attune',
     description: 'Natural-language questions answered from your team’s real activity, in seconds.',
     icon: (
       <svg

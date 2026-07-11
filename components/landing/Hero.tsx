@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { SauronMark } from '@/components/brand/SauronMark';
+import { AttuneMark } from '@/components/brand/AttuneMark';
 
 export function Hero() {
   return (
@@ -11,7 +11,7 @@ export function Hero() {
 
       <div className="relative mx-auto flex max-w-5xl flex-col items-center px-6 py-24 text-center sm:py-32 lg:py-40">
         <div className="mb-8 flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 backdrop-blur-sm ring-1 ring-white/20">
-          <SauronMark className="h-9 w-9" />
+          <AttuneMark className="h-9 w-9" />
         </div>
 
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl lg:text-6xl">

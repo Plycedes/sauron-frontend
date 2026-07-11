@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { SauronMark } from '@/components/brand/SauronMark';
+import { AttuneMark } from '@/components/brand/AttuneMark';
 
 export function LandingNav() {
   const { isAuthenticated, isLoading } = useAuth();
@@ -12,9 +12,9 @@ export function LandingNav() {
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
         <Link href="/" className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-white/15 backdrop-blur-sm ring-1 ring-white/20">
-            <SauronMark className="h-5 w-5" />
+            <AttuneMark className="h-5 w-5" />
           </div>
-          <span className="text-lg font-semibold text-white">Sauron</span>
+          <span className="text-lg font-semibold text-white">Attune</span>
         </Link>
 
         <div className="flex items-center gap-2 sm:gap-3">

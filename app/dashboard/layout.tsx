@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 import { ProtectedRoute } from '@/lib/auth/ProtectedRoute';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { OnboardingScreen } from '@/components/onboarding/OnboardingScreen';
-import { SauronMark } from '@/components/brand/SauronMark';
+import { AttuneMark } from '@/components/brand/AttuneMark';
 import { ROLE_LABEL } from '@/lib/constants/roles';
 import type { UserResponse } from '@/types/user.types';
 import type { MembershipRole } from '@/types/company.types';
@@ -24,7 +24,7 @@ const NAV_ITEMS: NavItem[] = [
   { href: '/dashboard/projects', label: 'Projects' },
   { href: '/dashboard/my-updates', label: 'My Updates' },
   { href: '/dashboard/team', label: 'Team', privileged: true },
-  { href: '/dashboard/ask', label: 'Ask Sauron', privileged: true },
+  { href: '/dashboard/ask', label: 'Ask Attune', privileged: true },
 ];
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
@@ -77,9 +77,9 @@ function Sidebar({ user, onLogout }: { user: UserResponse; onLogout: () => Promi
       {/* Brand */}
       <div className="flex h-14 items-center gap-2.5 border-b border-gray-800 px-5">
         <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-orange-600">
-          <SauronMark className="h-4 w-4" />
+          <AttuneMark className="h-4 w-4" />
         </div>
-        <span className="text-base font-semibold text-white">Sauron</span>
+        <span className="text-base font-semibold text-white">Attune</span>
       </div>
 
       {/* Nav */}

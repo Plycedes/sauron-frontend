@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useAuth } from '@/lib/auth/AuthContext';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { SauronMark } from '@/components/brand/SauronMark';
+import { AttuneMark } from '@/components/brand/AttuneMark';
 
 export default function LoginPage() {
   const { login } = useAuth();
@@ -39,10 +39,10 @@ export default function LoginPage() {
         <div className="relative">
           {/* Eye icon */}
           <div className="mb-2 flex h-12 w-12 items-center justify-center rounded-xl bg-white/20 backdrop-blur-sm">
-            <SauronMark className="h-7 w-7" />
+            <AttuneMark className="h-7 w-7" />
           </div>
-          <h1 className="mt-4 text-4xl font-bold text-white tracking-tight">Sauron</h1>
-          <p className="mt-2 text-orange-200 text-lg">All-seeing project intelligence.</p>
+          <h1 className="mt-4 text-4xl font-bold text-white tracking-tight">Attune</h1>
+          <p className="mt-2 text-orange-200 text-lg">Stay in tune with your team.</p>
         </div>
 
         <div className="relative space-y-6">
@@ -65,9 +65,9 @@ export default function LoginPage() {
         {/* Mobile brand mark */}
         <div className="mb-8 flex flex-col items-center lg:hidden">
           <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-orange-600">
-            <SauronMark className="h-7 w-7" />
+            <AttuneMark className="h-7 w-7" />
           </div>
-          <span className="mt-3 text-2xl font-bold text-white">Sauron</span>
+          <span className="mt-3 text-2xl font-bold text-white">Attune</span>
         </div>
 
         <div className="w-full max-w-sm">
